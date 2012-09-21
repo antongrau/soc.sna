@@ -24,6 +24,6 @@ gplot <- function(graph, vertex.coord=NULL, vertex.color="black", vertex.fill="g
   pnet <- ggplot()
   pnet <- pnet + geom_point(data=vertex.coord, aes(x=x, y=y), colour=vertex.color, shape=vertex.shape, fill="grey60",  size=vertex.size, alpha=vertex.alpha)
   pnet <- pnet + geom_segment(aes(x=start.x, y=start.y, xend=slut.x, yend = slut.y, size=weight), data=edge.mat, colour=edge.colour, alpha=edge.alpha)
-  pnet <- pnet + geom_text(data=vertex.coord, aes(x=x, y=y, label=id), size=7)
+  pnet <- pnet + geom_text(data=vertex.coord, aes(x=x, y=y, label=id), size=4)
   pnet + theme_bw()
 }
