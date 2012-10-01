@@ -16,11 +16,13 @@
 
 # Set working directory:
 # Indsæt her din egen path
-setwd("~/Dropbox/R/interlocks/")
+setwd("~/My Dropbox/R/interlocks/")
 
 # Indlæs data om virksomhederne
-### NB ANTON INDSÆT LINK TIL GITHUB DATA!
-virk <- read.csv("~/Dropbox/Elite/Data/Data/Organisation_BIQ_top.csv", sep="|", encoding="UTF-8")
+
+download.file("https://raw.github.com/antongrau/soc.sna/master/Organisation_BIQ_top_U.csv", destfile="Organisation_BIQ_top_U.csv")
+virk <- read.csv(file="Organisation_BIQ_top_U.csv", sep="|", fileEncoding="UTF-8", dec = ",") 
+
 
 # Her kan du se hvilke variable der er i datasættet
 str(virk)
@@ -47,22 +49,6 @@ omsætning <- virk$OMSÆTNING.10 # Omsætning i millioner kr. i 2010
 
 #### Svar 
 
-
-max(omsætning, na.rm=TRUE)
-median(omsætning, na.rm=TRUE)
-round(max(omsætning, na.rm=TRUE)/min(omsætning, na.rm=TRUE))
-
-#------------------------------------------------------
-
-max <- max(omsætning, na.rm=TRUE)
-min <- min(omsætning, na.rm=TRUE)
-med <- median(omsætning, na.rm=TRUE)
-
-
-
-
-
-
 # A:
 ma    <- max(omsætning, na.rm=TRUE)
 mi    <- min(omsætning, na.rm=TRUE)
@@ -83,38 +69,6 @@ navn <- virk$ORG_NAVN # Virksomhedens navn
 # Tip: names(), [], which(), ==
 
 #### Svar
-
-a <- omsætning == max
-navn [a]
-a <- omsætning == min
-navn [a]
-a <- omsætning == med
-navn [a]
-
-#---------------------------------------------
-
-submax <- omsætning == max
-submin <- omsætning == min
-submed <- omsætning == med
-
-
-
-
-str(omsætning)
-names(omsætning) <- navn
-str(omsætning)
-
-submax <- omsætning == max
-navn [submax]
-navn [which(submax==T)]
-
-omsætning[submax]
-
-størst <- omsætning[which(submax)]
-mindst <- omsætning[which(submin==T)]
-#mindst <- navn[omsætning==min]
-
-
 
 ## A
 names(omsætning) <- navn
@@ -138,22 +92,6 @@ ansatte <- virk$ANSATTE.10 # Antal ansatte i 2010
 
 #### Svar
 
-
-names(ansatte) <- navn
-
-ansatte[which(submin)]
-ansatte[mindst]
-ansatte[which(mindst)]
-ansatte[omsætning[submin]]
-ansatte[which(omsætning==max(omsætning, na.rm=T))]
-ansatte[which(submed)]
-
-omsætning[which(ansatte==max(ansatte, na.rm=T))]
-omsætning[which(ansatte==min(ansatte, na.rm=T))]
-
-plot(ansatte, omsætning)
-?plot
-
 ## A
 names(ansatte) <- navn
 ansatte[which(omsætning == ma)]
@@ -166,6 +104,8 @@ omsætning[which(ansatte == min(ansatte, na.rm=TRUE))]
 ############### Vector øvelse 4 ###################
 # Den her øvelse går ud på at forstå:
 # Hvordan vi udregner nye værdier på baggrund af to vectorer
+# Hvordan man afrunder tal
+# 
 
 ansatte.9.til.10    <- virk$ÆNDRING.ANSATTE.9.10 # Ændringen i antal ansatte fra 2009 til 2010 i procent
 
@@ -179,46 +119,14 @@ ansatte.9.til.10    <- virk$ÆNDRING.ANSATTE.9.10 # Ændringen i antal ansatte f
 
 #### Svar
 
-omsætning.pr.ansat <- omsætning/ansatte
-omsætning.pr.ansat <- round(omsætning.pr.ansat,2)
-ansatte.9 <- ansatte/(100+ansatte.9.til.10)*100
-hyr.fyr <- ansatte.9*ansatte.9.til.10/100
-names(hyr.fyr) <- navn
 
-hyr.fyr[which(hyr.fyr==max(hyr.fyr, na.rm=T))]
-hyr.fyr[which(hyr.fyr==min(hyr.fyr, na.rm=T))]
-
-
-a <- 5
-x <- 1000
-y <- x*(100+a)/100
-x
-y
-d <- a*x/100
-
-x <- y/(100+a)*100
-
-
-## A ¤¤¤¤ Svaret er ikke færdigt
+## A
 omsætning.pr.ansat <- omsætning/ansatte
 summary(omsætning.pr.ansat)
 round(omsætning.pr.ansat, 2)
 
-hyr.fyr <- (ansatte.9.til.10/100*ansatte)
-
-ansatte.09 <- ansatte - hyr.fyr
-
-
-############### Vector øvelse 3 ###################
-# Den her øvelse går ud på at forstå:
-
-# Spørgsmål:
-
-#### Svar
-
-
-
-
+hyr.fyr <- round(ansatte - ansatte/(1+ansatte.9.til.10/100))
+hyr.fyr
 
 
 
