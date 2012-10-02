@@ -13,7 +13,6 @@ example(max)
 # Find hjælp til funktionen min()
 # Prøv et eksempel fra funktionen min()
 
-
 ##################################################
 ############# Vectorer ###########################
 
@@ -26,6 +25,7 @@ summary(tal)
 edit(tal)
 str(1.5)              # Numerical
 plot(tal)
+
 # Øvelse 2:
 # Lav en numerisk vector med 5 udfald
 # Lav et summary af din vector
@@ -71,6 +71,7 @@ faktor
 levels(faktor)    <- c("arme", "næse", "ben")
 faktor
 plot(faktor)
+as.numeric(faktor)
 
 # Øvelse 5:
 # Lav din character vector om til factor
@@ -136,6 +137,8 @@ antal.celler
 antal.celler(df)
 antal.celler(df, plus=10)   # Her angiver jeg hvad plus skal være med et =
 antal.celler(df, 10)        # Her sætter jeg plus værdien på den rigtige plads, altså som det andet objekt i funktionen
+
+# colSums
 
 # Øvelse 9:
 # Udregn antallet af celler med antal.celler funktionen

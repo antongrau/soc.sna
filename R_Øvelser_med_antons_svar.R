@@ -52,6 +52,11 @@ omsætning <- virk$OMSÆTNING.10 # Omsætning i millioner kr. i 2010
 
 #### Svar 
 
+# A:
+ma    <- max(omsætning, na.rm=TRUE)
+mi    <- min(omsætning, na.rm=TRUE)
+med   <- median(omsætning, na.rm=TRUE)
+ma/mi
 
 ############### Vector øvelse 2 ###################
 # Den her øvelse går ud på at forstå:
@@ -67,6 +72,12 @@ navn <- virk$ORG_NAVN # Virksomhedens navn
 # Tip: names(), [], which(), ==
 
 #### Svar
+
+## A
+names(omsætning) <- navn
+omsætning[which(omsætning==ma)]
+omsætning[which(omsætning==mi)]
+omsætning[which(omsætning==med)]
 
 
 ############### Vector øvelse 3 ###################
@@ -84,6 +95,14 @@ ansatte <- virk$ANSATTE.10 # Antal ansatte i 2010
 
 #### Svar
 
+## A
+names(ansatte) <- navn
+ansatte[which(omsætning == ma)]
+ansatte[which(omsætning == mi)]
+ansatte[which(omsætning == med)]
+
+omsætning[which(ansatte == max(ansatte, na.rm=TRUE))]
+omsætning[which(ansatte == min(ansatte, na.rm=TRUE))]
 
 ############### Vector øvelse 4 ###################
 # Den her øvelse går ud på at forstå:
@@ -102,6 +121,15 @@ ansatte.9.til.10    <- virk$ÆNDRING.ANSATTE.9.10 # Ændringen i antal ansatte f
 # Tip: round()
 
 #### Svar
+
+## A
+omsætning.pr.ansat <- omsætning/ansatte
+summary(omsætning.pr.ansat)
+round(omsætning.pr.ansat, 2)
+hyr.fyr     <- round(ansatte - ansatte/(1+ansatte.9.til.10/100))
+ansatte09   <- ansatte + hyr.fyr
+hyr.fyr[which(hyr.fyr == max(hyr.fyr, na.rm=TRUE))]
+hyr.fyr[which(hyr.fyr == min(hyr.fyr, na.rm=TRUE))]
 
 ############### Vector øvelse 5 ###################
 # Den her øvelse går ud på at forstå:
@@ -123,6 +151,12 @@ ansatte.9.til.10    <- virk$ÆNDRING.ANSATTE.9.10 # Ændringen i antal ansatte f
 ### Svar
 
 
+# A
+rang     <- order(omsætning, decreasing=TRUE)
+omsætning.rang <- omsætning[rang]
+head(omsætning.rang, 20)
+tail(omsætning.rang, 20)
+
 ############### Vector øvelse 6 ###################
 # Den her øvelse går ud på at forstå:
 # Omkodning af kontinuerte variable til kategorielle variable
@@ -137,6 +171,27 @@ ansatte.9.til.10    <- virk$ÆNDRING.ANSATTE.9.10 # Ændringen i antal ansatte f
 
 ### Svar
 
+# A
+omsætning.kat <- omsætning
+summary(omsætning)
+omsætning.kat[omsætning <= 449 ]                      <- "1. kvartil"
+omsætning.kat[omsætning >= 450 & omsætning <= 758]    <- "2. kvartil"
+omsætning.kat[omsætning >= 759 & omsætning <= 1624]   <- "3. kvartil"
+omsætning.kat[omsætning >= 1625]                      <- "4. kvartil"
+omsætning.kat <- as.factor(omsætning.kat)
+summary(omsætning.kat)
+
+# Eller:
+omsæt.kat <- cut(omsætning, quantile(omsætning, na.rm=TRUE))
+levels(omsæt.kat) <- c("1. kvartil", "2. kvartil", "3.kvartil", "4.kvartil")
+summary(omsæt.kat)
+
+ansat.kat <- cut(ansatte, quantile(ansatte, na.rm=TRUE))
+levels(ansat.kat) <- c("1. kvartil", "2. kvartil", "3. kvartil", "4. kvartil")
+summary(ansat.kat)
+
+tab <- table(ansat.kat, omsæt.kat)
+round(prop.table(tab, 1), 2)
 
 ###################################################
 #################### Matricer #####################
@@ -175,6 +230,11 @@ adj           <- t(tabnet)%*%tabnet
 
 ### Svar
 
+# A
+
+diagonal <- diag(adj)
+tail(sort(diagonal, decreasing=TRUE))
+diag(adj) <- 0
 
 ############### Matrix øvelse 2 ###################
 # Den her øvelse går ud på at forstå:
@@ -195,6 +255,14 @@ adj           <- t(tabnet)%*%tabnet
 
 
 ### Svar
+
+
+# A
+cols        <- colSums(adj)
+summary(cols==0) # Antallet af isolates
+head(sort(cols, decreasing=TRUE)) # De største virksomheder
+isolates    <- which(cols==0)
+adj.i       <- adj[-isolates,-isolates]
 
 
 

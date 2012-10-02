@@ -15,7 +15,12 @@ library(igraph)
 # Indsæt dit eget eller arbejd i dit standard bibliotek
 
 # Download datasættet
+
+# Windows
 download.file("https://raw.github.com/antongrau/soc.sna/master/edgelist.csv", destfile="edgelist.csv")
+
+# Mac/Linux
+download.file("https://raw.github.com/antongrau/soc.sna/master/edgelist.csv", destfile="edgelist.csv", method="curl")
 data <- read.csv(file="edgelist.csv", sep=",", fileEncoding="latin1") 
 
 # Her fjerner vi tomme rækker i data
@@ -60,7 +65,10 @@ plot.igraph(graph.organisation, vertex.label=V(graph.organisation)$name,layout=l
 
 
 # Først henter vi koden til plot funktionen
+# Windows
 download.file("https://raw.github.com/antongrau/soc.sna/master/gplot.R", destfile="gplot.R")
+# Mac/Linux
+download.file("https://raw.github.com/antongrau/soc.sna/master/gplot.R", destfile="gplot.R", method="curl")
 source("gplot.R")
 library(ggplot2)
 
@@ -75,8 +83,4 @@ gplot(graph.individ, vertex.coord=layout.fruchterman.reingold(graph.individ), ed
 gplot(graph.organisation, vertex.coord=layout.kamada.kawai(graph.organisation))
 # Et til!
 gplot(graph.organisation, vertex.coord=layout.fruchterman.reingold(graph.organisation), edge.colour="blue", edge.alpha=0.2 )
-
-
-
-
 
