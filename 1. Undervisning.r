@@ -219,7 +219,12 @@ df
 str(df)
 df[,1]
 df$Antal
+df$Ris <- rep("Ris", 4)
+df
 
 # Øvelse 14:
 # Subset jeres dataframe med $
+# Assign en ny kolonne ind i jeres data.frame med $
+
+
 
