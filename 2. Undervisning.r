@@ -69,7 +69,7 @@ fact$listen <- listen  # Vi kan assigne ind i noget der ikke findes!
 ### Øvelse
 # Lav en klyngeanalyse og undersøg resultat objektet
 cluster <- hclust(dist(eksempel))
-
+plot(cluster)
 
 
 
