@@ -48,7 +48,7 @@ del.beskrivelse <- function(net, variabel){
     output[,i] <- del.stat
   }
   colnames(output) <- dele
-  rownames(output) <- c("Number of vertices", "Number of edges", "Average degree", "Part density (‰)", "Isolates (%)",
+  rownames(output) <- c("Number of vertices", "Number of edges", "Average degree", "Part density (o/oo)", "Isolates (%)",
                         "Largest component (%)", "Average path length", "Longest path", "Highest degree", "Largest 2. neighborhood", "Largest 3. neighborhood")
   return(output)
 # Net er et igraph object
