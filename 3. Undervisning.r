@@ -68,7 +68,7 @@ n2
 grannis.g.factor <- sum(n2-n1)/sum(n1)
 grannis.g.factor
 names(n2)        <- rownames(adj.virk)
-head(sort(n2, decreasing=TRUE), 20)
+as.matrix(head(sort(n2, decreasing=TRUE), 20))
 as.matrix(head(sort(n2-n1, decreasing=TRUE), 20))
 
 n3               <- neighborhood.size(net.virk, 3)-1
