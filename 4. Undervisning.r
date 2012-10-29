@@ -53,7 +53,6 @@ totaldegree
 average.degree  <- totaldegree/nrow(adj.ind)
 average.degree
 
-
 ######################################
 ######## Neighborhoods ###############
 
@@ -65,20 +64,18 @@ n2
 
 grannis.g.factor <- sum(n2-n1)/sum(n1)
 grannis.g.factor
+
 names(n2)        <- rownames(adj.ind)
 as.matrix(head(sort(n2, decreasing=TRUE), 20))
 as.matrix(head(sort(n2-n1, decreasing=TRUE), 20))
-
 n3               <- neighborhood.size(net.ind, 3)-1
+
 names(n3)        <- rownames(adj.ind)
 as.matrix(head(sort(n3, decreasing=TRUE), 20))
-
-plot(sort(n3-n2-n1, decreasing=TRUE))
-
-### Et lille plot
-neighbours <- neighborhood.size(net.ind, 2)
-n <- gplot(net.ind, vertex.coord=layout, vertex.fill=neighbours ,text.alpha=0, vertex.size=4, edge.alpha=0.1)
-n + scale_fill_gradient2(high = "blue")
+plot(sort(n2, decreasing=TRUE))
+plot(sort(n3, decreasing=TRUE))
+n6               <- neighborhood.size(net.ind, 6)-1
+plot(sort(n6, decreasing=TRUE))
 
 #######################################################
 ################# Density #############################
@@ -86,9 +83,6 @@ n + scale_fill_gradient2(high = "blue")
 # Average path
 plot(path.length.hist(net.ind)$res) # Wauv den er normalfordelt!
 average.path.length(net.ind)
-
-# Inclusiveness
-no.clusters(net.ind)
 
 # Density
 L <- ecount(net.ind) # Antallet af edges
@@ -106,18 +100,14 @@ table(com$csize)
 adj.ind           <- adj.ind[largest.component, largest.component]
 net.ind           <- graph.adjacency(adj.ind, mode="undirected", weighted=TRUE)
 
-
 #################################################################################
 ################################# Centralitet ###################################
-
-#### Lokal centralitet
 
 # Den relative centralitet - 
 cent.deg      <- centralization.degree(net.ind)
 str(cent.deg)
 cent.deg$centralization       # Antallet af degrees i det bedst forbundne punkt sat i forhold til alle forbindelser
 cent.deg$theoretical_max      # Det teoretiske maximale antal degrees for hele netværket
-
 
 ## Closeness
 close <- closeness(net.ind)
@@ -171,21 +161,66 @@ plot(sort(betweenness.estimate(net.ind, cutoff=15), decreasing=TRUE))
 
 
 ### Eigenvector centrality
-
 eig  <- evcent(net.ind)
 str(eig)
-head(sort(eig$vector, decreasing=TRUE), 200)
+as.matrix(head(sort(eig$vector, decreasing=TRUE), 30))
 plot(sort(eig$vector, decreasing=TRUE))
 
+### Closeness og Betweenness
+set <- data.frame(close, between)
+ggplot(set, aes(x=close, y=between)) + geom_point(aes(color=eig$vector)) + geom_smooth()
 
 
+###################################################################
+########################## Regeringen #############################
+
+# Download datasættet
+# Windows
+download.file("https://raw.github.com/antongrau/soc.sna/master/edgelist.csv", destfile="edgelist.csv")
+
+# Mac/Linux
+download.file("https://raw.github.com/antongrau/soc.sna/master/edgelist.csv", destfile="edgelist.csv", method="curl")
+
+data <- read.csv(file="edgelist.csv", sep=",", fileEncoding="latin1") 
+
+# Her fjerner vi tomme rækker i data
+navn  <- data$NAVN
+org   <- data$ORG
+a     <- navn==""
+navn  <- navn[a==FALSE, drop=TRUE]
+org   <- org[a==FALSE, drop=TRUE]
+ind.org <- data.frame(navn, org)
+colnames(ind.org) <- c("navn", "org")
+affiliation           <- as.matrix(affiliation)
+
+# Så laves adjacency matricen for individer
+adjacency.individ     <- affiliation%*%t(affiliation)
+
+# Her slettes vi diagonalen i begge matricer
+diag(adjacency.individ)       <- 0
+
+# Så laver vi et netværksobjekt for individer
+graph.individ        <- graph.adjacency(adjacency.individ, mode="undirected", weighted=TRUE)
+
+# Degree centralitet
+cent.deg      <- centralization.degree(graph.individ)
+str(cent.deg)
+cent.deg$centralization       # Antallet af degrees i det bedst forbundne punkt sat i forhold til alle forbindelser
+cent.deg$theoretical_max      # Det teoretiske maximale antal degrees for hele netværket
+sort(degree(graph.individ), decreasing=TRUE)
 
 
+## Closeness
+close <- closeness(graph.individ)
+as.matrix(sort(close, decreasing=TRUE))
+plot(sort(close, decreasing=TRUE))
+
+## Betweenness 
+between <- betweenness(graph.individ, weights=E(graph.individ)$weight)
+as.matrix(sort(between, decreasing=TRUE))
+plot(sort(close, decreasing=TRUE))
 
 
-
-
-
-
-
-
+layout <- layout.fruchterman.reingold(graph.individ)
+gplot(graph.individ, layout, vertex.size=close, vertex.fill=close)  + scale_fill_gradient2(high = "red")
+gplot(graph.individ, layout, vertex.size=between, vertex.fill=between)  + scale_fill_gradient2(high = "red")
