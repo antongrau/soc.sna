@@ -7,6 +7,7 @@
 # vertex: size, fill, shape
 # Text
 
+# Der skal være assigned en vægt til netværket...
 
 
 # graph <- net

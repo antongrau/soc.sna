@@ -3,6 +3,8 @@ setwd("~/My Dropbox/R/interlocks/")
 
 library(ggplot2)
 library(igraph)
+memory.size(4000)
+
 
 # Download data om indsomhederne
 # Windows
@@ -27,6 +29,8 @@ edge.table    <- table(edges)
 tabnet        <- as.matrix(edge.table)
 adj.ind       <- tabnet %*% t(tabnet)
 diag(adj.ind) <- 0 
+
+table(diag(adj.ind))
 
 net.ind       <- graph.adjacency(adj.ind, mode="undirected", weighted=TRUE)
 
@@ -60,7 +64,7 @@ n1               <- neighborhood.size(net.ind, 1)-1
 n1
 
 n2               <- neighborhood.size(net.ind, 2)-1
-n2
+plot(sort(n2))
 
 grannis.g.factor <- sum(n2-n1)/sum(n1)
 grannis.g.factor
@@ -100,10 +104,13 @@ table(com$csize)
 adj.ind           <- adj.ind[largest.component, largest.component]
 net.ind           <- graph.adjacency(adj.ind, mode="undirected", weighted=TRUE)
 
+save(adj.ind, file="adj.ind")
+save(net.ind, file="net.ind")
+
 #################################################################################
 ################################# Centralitet ###################################
 
-# Den relative centralitet - 
+# Den relative centralitet
 cent.deg      <- centralization.degree(net.ind)
 str(cent.deg)
 cent.deg$centralization       # Antallet af degrees i det bedst forbundne punkt sat i forhold til alle forbindelser
