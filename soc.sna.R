@@ -30,7 +30,7 @@
 # edge.line="twodash"
 # edge.size=1
 
-gplot <- function(graph, vertex.coord=NULL,
+gplot <- function(graph, vertex.coord=layout.fruchterman.reingold(graph),
                   vertex.color="black", vertex.fill="grey60", vertex.shape=21, vertex.size=3, vertex.alpha=1,
                   edge.color="black", edge.alpha=0.2, edge.size=1, edge.line="solid",
                   text.size=3, text.colour="black", text.alpha=1){
