@@ -311,3 +311,46 @@ circles <- function(graph, neighborhood=2, mode="total"){
   
   return(circle.mat)
 }
+
+########### Describe vertex
+
+who  <-  function(net, name=NULL, relation.matrix=rel, vertex=NULL){
+  
+  
+  ## Finding the name and vertex number
+  if( identical(name, NULL))   name    <- V(net)$name[vertex]
+  if( identical(vertex, NULL)) vertex  <- which(V(net)$name == name)
+  
+  # Number of degrees
+  deg     <- degree(net)[vertex]
+  # Betweenness
+  between <- round(betweenness(net))
+  between.vertex <- between[vertex]
+  between.rank   <- which(order(between, decreasing=TRUE)==vertex)
+  # 2nd Neighborhood
+  n2      <- neighborhood.size(net, 2)[vertex]
+  # Closeness
+  close          <- closeness(net)
+  close.vertex   <- close[vertex]
+  # Closeness rank
+  close.rank     <- which(order(close, decreasing=TRUE)==vertex)
+  
+  ###### Memberships
+  
+  medlemskaber <- as.character(relation.matrix$ORG_NAVN[relation.matrix$NAVN == name])
+  positioner   <- as.character(relation.matrix$POSITION[relation.matrix$NAVN == name])
+  mem <- medlemskaber
+  positioner[positioner == ""] <- "Medlem"
+  mem <- paste(positioner, ": ", mem)
+  mem <-  mem[order(positioner, decreasing=FALSE)]  
+  
+  cat( "Name: ", name, "\n")  
+  cat( "Degrees: ", deg, "\n")
+  cat( "2nd Neighborhood: ", n2, "\n")
+  cat( "Betweenness: ", between.vertex, "\n")
+  cat( "Betweenness rank: ", between.rank, "\n")
+  cat( "Closeness: ", close.vertex, "\n")
+  cat( "Closeness rank: ", close.rank, "\n")
+  cat( "Memberships: ", "\n")
+  print(noquote(as.matrix(mem)))
+}
