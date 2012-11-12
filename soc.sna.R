@@ -231,6 +231,9 @@ network.by.variable <- function(net, variabel){
 
 
 ######## Overlapping Social Circles by Alba and Kadushin
+# Der er stadig noget bøvl med at trække 1 fra de overlappende hoods
+
+
 
 circles <- function(graph, neighborhood=2, mode="total"){
   n2 <- neighborhood(graph, order=neighborhood)
@@ -244,7 +247,7 @@ circles <- function(graph, neighborhood=2, mode="total"){
       # Andel af egne forbindelser man deler med hood2  
       hood.size          <- length(hood) #-1
       hood2.size         <- length(hood2) #-1
-      hood.overlap       <- sum(hood %in% hood2)
+      hood.overlap       <- sum(hood %in% hood2) 
       hood.total.size    <- hood.size + hood2.size - hood.overlap # NB er det her korrekt!
       
       overlap.total      <- hood.overlap/hood.total.size

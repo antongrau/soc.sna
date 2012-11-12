@@ -1,0 +1,100 @@
+En simpel introduktion til de 1000 største virksomheder i Danmark
+========================================================
+
+I det her dokument samles tabeller og figurer til analysen af corporate interlocks i Danmark
+
+
+```{r echo=FALSE}
+library(ggplot2)
+library(igraph)
+library(cluster)
+library(reshape)
+
+options(width=250)
+setwd("~/Dropbox/R/interlocks/")
+source("soc.sna.R")
+data <- read.csv("Organisation_BIQ_top.csv", sep="|", encoding="UTF-8")
+rel  <- read.csv("Relation_BIQ_top.csv", sep="|", encoding="UTF-8") 
+
+employees   <- data$ANSATTE.10
+turnover    <- data$OMSÆTNING.10
+balance     <- data$BALANCE.10
+result      <- data$RESULTAT.FØR.SKAT.10 
+capital     <- data$EGENKAPITAL.10 
+
+pareto.dat <- data.frame(employees, turnover, capital, balance, result)
+### Netværk
+
+netmat <- data.frame(rel$NAVN, rel$ORG_NAVN)
+colnames(netmat) <- c("navn", "org")
+
+tabnet          <- table(netmat)
+tabnet          <- as.matrix(tabnet)
+adj.org         <- t(tabnet)%*%tabnet # Individ*individ
+diagonal.org    <- diag(adj.org)
+diag(adj.org)   <- 0
+
+net.org         <- graph.adjacency(adj.org, weighted=TRUE)
+
+deg             <- degree(net.org) 
+close           <- closeness(net.org)
+between         <- betweenness(net.org)
+neigh2          <- neighborhood.size(net.org, 2)
+net.mat         <- data.frame(deg, close, between, neigh2)
+colnames(net.mat) <- c("Degree", "Closeness", "Betweeness", "Neighborhood")
+
+###
+
+
+pareto <- function(x, decreasing=FALSE){
+total.x    <- sum(x, na.rm=TRUE)  
+prop.x     <- x/total.x 
+cum.x      <- cumsum(prop.x[order(prop.x, decreasing=decreasing)])
+return(cum.x)
+}
+### The real deal
+
+pareto.dat      <- as.data.frame(apply(pareto.dat, 2 ,pareto))
+pareto.dat$rank <- (1:nrow(pareto.dat))/nrow(pareto.dat) 
+pareto.dat      <- melt(pareto.dat, "rank")
+
+net.mat      <- as.data.frame(apply(net.mat, 2, pareto))
+net.mat$rank    <- (1:nrow(net.mat))/nrow(net.mat)
+net.mat         <- melt(net.mat, "rank")
+```
+
+Pareto fordelinger eller Lorentz-kurver for økonomiske variable og netværksvariable.
+
+```{r echo=FALSE, comment="", echo=FALSE}
+ggplot(data=pareto.dat, aes(x=rank, y=value, colour=variable,  group=variable)) + geom_line(aes(linetype=variable)) + theme_bw()
+
+ggplot(data=net.mat, aes(x=rank, y=value, colour=variable, group=variable)) + geom_line(aes(linetype=variable)) + theme_bw()
+```
+
+## Deskriptiv statistik for netværksmål
+
+Her beskrives data udfra branche. Det er klart at målene i network.by.variable ikke er de rigtige. Der skal laves en funktion specifikt til denne analyse.
+
+Her skal vi have:
+
+Antal virksomheder:
+Antal edges:
+Antal direktører:
+Average degree:
+Average betweenness:
+Largest component:
+% isolates:
+% af medlemmer i core component:
+% af core component:
+
+```{r echo=FALSE, comment="", echo=FALSE}
+network.by.variable(net.org, data$BØRSEN.BRANCHE)
+```
+
+## Deskriptiv statistik for økonomiske variable
+Her skal vi have tre forskellige matricer.
+
+
+```{r echo=FALSE, comment="", echo=FALSE}
+
+```
