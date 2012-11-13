@@ -54,18 +54,17 @@ adj.com        <- adj.ind[largest.com, largest.com]
 # Her finder vi inderkredsen
 circle3        <- circles(net.com, 3, "total")
 clust3         <- agnes(circle3)
-
 plot(clust3)
 
 
-### 10
+### 10 # Tjek 4
 k10            <- cutree(clust3, k=10)
 table(k10)
 network.by.variable(net.com, k10)
 
 net.del <- net.com - which(k10 != 4)
 gplot(net.del)
-
+as.matrix(sort(degree(net.del)))
 
 ## 25 Her ryger Ane Uggla
 k25            <- cutree(clust3, k=25)

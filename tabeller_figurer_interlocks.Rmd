@@ -11,7 +11,7 @@ library(cluster)
 library(reshape)
 
 options(width=250)
-setwd("~/Dropbox/R/interlocks/")
+setwd("~/My Dropbox/R/interlocks/")
 source("soc.sna.R")
 data <- read.csv("Organisation_BIQ_top.csv", sep="|", encoding="UTF-8")
 rel  <- read.csv("Relation_BIQ_top.csv", sep="|", encoding="UTF-8") 

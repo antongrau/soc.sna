@@ -247,8 +247,9 @@ circles <- function(graph, neighborhood=2, mode="total"){
       # Andel af egne forbindelser man deler med hood2  
       hood.size          <- length(hood) #-1
       hood2.size         <- length(hood2) #-1
-      hood.overlap       <- sum(hood %in% hood2) 
+      hood.overlap       <- sum(hood %in% hood2) - sum(hood2 == j)
       hood.total.size    <- hood.size + hood2.size - hood.overlap # NB er det her korrekt!
+        
       
       overlap.total      <- hood.overlap/hood.total.size
       overlap.own        <- hood.overlap/hood.size 
