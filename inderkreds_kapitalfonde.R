@@ -4,8 +4,6 @@
 setwd("~/My Dropbox/R/interlocks/")
 
 # Hvis du ikke har installeret cluster pakken så kør:
-install.packages("cluster")
-
 library(ggplot2)
 library(cluster)
 library(igraph)
@@ -54,68 +52,162 @@ adj.com        <- adj.ind[largest.com, largest.com]
 # Her finder vi inderkredsen
 circle3        <- circles(net.com, 3, "total")
 clust3         <- agnes(circle3)
-plot(clust3)
+#plot(clust3)
 
 
 ### 10 # Tjek 4
-k10            <- cutree(clust3, k=10)
-table(k10)
-network.by.variable(net.com, k10)
-
-net.del <- net.com - which(k10 != 4)
-gplot(net.del)
-as.matrix(sort(degree(net.del)))
-
+# k10            <- cutree(clust3, k=10)
+# table(k10)
+# network.by.variable(net.com, k10)
+# 
+# net.del <- net.com - which(k10 != 4)
+# gplot(net.del)
+# as.matrix(sort(degree(net.del)))
 ## 25 Her ryger Ane Uggla
 k25            <- cutree(clust3, k=25)
-table(k25)
+# table(k25)
 
-network.by.variable(net.com, k25==4)
-net.del <- net.com - which(k25 != 4)
-gplot(net.del)
+#network.by.variable(net.com, k25==4)
+#net.del <- net.com - which(k25 != 4)
+#gplot(net.del)
 
-## 32 
-k32            <- cutree(clust3, k=32)
-table(k32)
+de.170         <- which(k25==1)
+net.inderkreds <- net.com - which(k25!=1)
 
-network.by.variable(net.com, k32==6)
-net.del <- net.com - which(k32 != 6)
-gplot(net.del)
-
-a <- as.matrix(sort(degree(net.com)[k32==1]))
-a
-head(a)
-
-who(net.com, "Jesper Mailind")
-
-inder <- net.com - which(k32 != 1)
-as.matrix(sort(degree(inder)))
-
-## 58 Her ryger Anders Christen Obel AV!
-k58            <- cutree(clust3, k=58)
-table(k58)
-network.by.variable(net.com, k58==4)
-network.by.variable(net.com, k58==1)
-
-net.del <- net.com - which(k58 != 4)
-gplot(net.del)
+navne <- V(net.com)$name
+navn.170 <- navne[de.170]
 
 
-as.matrix(sort(degree(net.com)[k58==4]))
+save(net.inderkreds, file="inderkredsen")
+save(navn.170, file="inderkredsens.navne")
+write.csv(navn.170, file="inderkredsens.navne.csv")
 
-## 
-
-
-### Sammenfald med tidligere analyse
-
-load("inner.circle")
-net.del <- net.com - which(k32 != 1) 
-
-navn.inner <- V(net.inner)$name
-navn.ny    <- V(net.del)$name
-
-sum(navn.ny %in% navn.inner) / length(navn.ny)
-sum(navn.inner %in% navn.ny) / length(navn.inner)
+# 
+# degree(net.com)[de.170]
+# sort(closeness(net.com))[de.170]
+# sort(betweenness(net.com))[de.170]
+# network.by.variable(net.com, k25==1)
+# 
+# between.all <- sort(betweenness(net.com), decreasing=TRUE)[1:170]
+# between.170 <-betweenness(net.com)[de.170]
+# sum(between.all %in% between.170)/170
+# 
+# close.all <- sort(closeness(net.com), decreasing=TRUE)[1:170]
+# close.170 <-closeness(net.com)[de.170]
+# sum(close.all %in% close.170)/170
+# 
+# naf <- (close.all %in% close.170)
+# names(naf) <- names(close.all)
+# as.matrix(naf[naf==FALSE])
+# 
+# 
+# n3 <- neighborhood.size(net.com, 3)
+# names(n3) <- V(net.com)$name
+# 
+# n.all <- sort(n3, decreasing=TRUE)[1:170]
+# n.170 <- n3[de.170]
+# 
+# nn.all <- names(n.all)
+# nn.170 <- names(n.170)
+# 
+# sum(nn.all %in% nn.170) /170
+# 
+# mistet <- nn.all %in% nn.170
+# names(mistet) <- nn.all
+# as.matrix(mistet[mistet==FALSE])
+# 
+# mastet <- nn.170 %in% nn.all
+# names(mastet) <- nn.170
+# as.matrix(mastet[mastet==FALSE])
+# 
+# as.matrix(sort(ce3[de.170]))
+# as.matrix(sort(n3[de.170]))
+# 
+# hurma <- (n.170 %in% n.all)
+# sum(hurma)/170
+# names(hurma) <- names(n.170)
+# as.matrix(hurma[hurma==FALSE])
+# 
+# 
+# 
+# close.between <- betweenness(net.com) * closeness(net.com)
+# plot(sort(close.between))
+# cb.all <- sort(close.between, decreasing=TRUE)[1:170]
+# cb.170 <- close.between[de.170]
+# sum(cb.all %in% cb.170)/170
+# 
+# as.matrix(cb.all)
+# 
+# 
+# n4 <- neighborhood.size(net.com, 4)
+# plot(sort(n4))
+# 
+# ce3 <- closeness.estimate(net.com, cutoff=3)
+# plot(sort(ce3))
+# 
+# ce3.all <- sort(ce3, decreasing=TRUE)[1:170]
+# ce3.170 <- ce3[de.170]
+# 
+# nce3.all <- names(ce3.all)
+# nce3.170 <- names(ce3.170)
+# 
+# sum(nce3.all %in% nce3.170) /170
+# 
+# mistet <- nce3.all %in% nce3.170
+# names(mistet) <- nce3.all
+# as.matrix(mistet[mistet==FALSE])
+# 
+# mastet <- nce3.170 %in% nce3.all
+# names(mastet) <- nce3.170
+# as.matrix(mastet[mastet==FALSE])
+# 
+# 
+# 
+# 
+# 
+# 
+# ## 32 
+# k32            <- cutree(clust3, k=32)
+# table(k32)
+# 
+# network.by.variable(net.com, k32==6)
+# net.del <- net.com - which(k32 != 6)
+# gplot(net.del)
+# 
+# a <- as.matrix(sort(degree(net.com)[k32==1]))
+# a
+# head(a)
+# 
+# who(net.com, "Jesper Mailind")
+# 
+# inder <- net.com - which(k32 != 1)
+# as.matrix(sort(degree(inder)))
+# 
+# ## 58 Her ryger Anders Christen Obel AV!
+# k58            <- cutree(clust3, k=58)
+# table(k58)
+# network.by.variable(net.com, k58==4)
+# network.by.variable(net.com, k58==1)
+# 
+# net.del <- net.com - which(k58 != 4)
+# gplot(net.del)
+# 
+# 
+# as.matrix(sort(degree(net.com)[k58==4]))
+# 
+# ## 
+# 
+# 
+# ### Sammenfald med tidligere analyse
+# 
+# load("inner.circle")
+# net.del <- net.com - which(k32 != 1) 
+# 
+# navn.inner <- V(net.inner)$name
+# navn.ny    <- V(net.del)$name
+# 
+# sum(navn.ny %in% navn.inner) / length(navn.ny)
+# sum(navn.inner %in% navn.ny) / length(navn.inner)
 
 
 

@@ -14,17 +14,51 @@ colnames(netmat) <- c("navn", "org")
 
 tabnet          <- table(netmat)
 tabnet          <- as.matrix(tabnet)
-adj.org         <- t(tabnet)%*%tabnet # Individ*individ
+adj.org         <- t(tabnet)%*%tabnet 
 diagonal.org    <- diag(adj.org)
 diag(adj.org)   <- 0
 
 net.org         <- graph.adjacency(adj.org, weighted=TRUE)
 
+com             <- clusters(net.org)
+net.component   <- net.org - which(which.max(com$csize) != com$membership)
+
+save(net.org, net.component, org, diagonal.org, file="corporate.interlocks")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### Oprydning
+
+
+
 vægt <- E(net.org)$weight
 E(net.org)[vægt==4]
-
 sort(rowSums(adj.org == diagonal.org))
-
 adj.div <- adj.org / diagonal.org      # Hvor mange procent af deres bestyrelse de deler med en anden virksomhed
 subber  <- which(adj.div >= 0.5, arr.ind = TRUE)
 overlap <- adj.div[subber[,1], subber[,2]]
