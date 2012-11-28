@@ -7,6 +7,7 @@ setwd("~/My Dropbox/R/interlocks/")
 library(ggplot2)
 library(cluster)
 library(igraph)
+memory.size(4000)
 
 
 # Download data om indsomhederne
@@ -27,14 +28,16 @@ source("soc.sna.R")
 rel         <- read.csv("~/My Dropbox/Elite/Data/Data/Relation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8")
 org         <- read.csv("~/My Dropbox/Elite/Data/Data/Organisation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8")
 
-netmat <- data.frame(rel$NAVN, rel$ORG_NAVN)
+netmat <- data.frame(rel$BIQ_PERSON_ID, rel$ORG_NAVN)
 colnames(netmat) <- c("navn", "org")
 
+### Nu laves netværksobjekterne
 tabnet          <- table(netmat)
 tabnet          <- as.matrix(tabnet)
 adj.ind         <- tabnet%*%t(tabnet) # Individ*individ
 diagonal.ind    <- diag(adj.ind)
 diag(adj.ind)   <- 0
+
 
 # Her smider vi alle der ikke har mere end 1 virksomheds tie.
 bridges         <- diagonal.ind > 1
@@ -209,7 +212,43 @@ write.csv(navn.170, file="inderkredsens.navne.csv")
 # sum(navn.ny %in% navn.inner) / length(navn.ny)
 # sum(navn.inner %in% navn.ny) / length(navn.inner)
 
+# MERE JUNK
 
+# net.all <- graph.adjacency(adj.ind, weighted=TRUE)
+# 
+# # Her finder vi den største component
+# com            <- clusters(net.all)
+# largest.com    <- which.max(com$csize) == com$membership
+# net.com        <- net.all - which(largest.com == FALSE)
+# 
+# n.com           <- V(net.com)$name
+# b               <- rel$BIQ_PERSON_ID %in% n.com
+# 
+# # Her laver vi en dataindsamlingsmatrice for alle individer
+# n               <- as.factor(rel$NAVN)
+# nid             <- rel$BIQ_PERSON_ID
+# nidu <- nid[b]
+# n    <- n[b]
+# 
+# n   <-  n[duplicated(nidu)==FALSE]
+# nidu <- nidu[duplicated(nidu)==FALSE]
+# 
+# dat <- data.frame(nidu, n)
+# colnames(dat) <- c("BIQ_ID", "NAVN")
+# 
+# write.csv(dat, file="data_indsamling_component.csv", fileEncoding="UTF-8")
+# 
+
+# # Her laver vi en dataindsamlingsmatrice for alle individer
+# n               <- as.factor(rel$NAVN)
+# nid             <- rel$BIQ_PERSON_ID
+# nidu <- nid[duplicated(nid)==FALSE]
+# n    <- n[duplicated(nid)==FALSE]
+# 
+# dat <- data.frame(nidu, n)
+# colnames(dat) <- c("BIQ_ID", "NAVN")
+# 
+# write.csv(dat, file="data_indsamling_alle.csv", fileEncoding="UTF-8")
 
 
 

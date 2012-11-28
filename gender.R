@@ -13,7 +13,6 @@ str(mænd)
 mænd[, -1] <- apply(mænd[, -1], 2, as.numeric)
 mænd[is.na(mænd)] <- 0
 
-
 mænd.navn     <- mænd$Drengenavn 
 kvinder.navn  <- kvinder$Pigenavn
 
@@ -39,8 +38,7 @@ identical(bi.mænd[,1], bi.kvinder[,1])
 # begge.antal        <-  bi.mænd$bi.antal.mænd + bi.kvinder$bi.antal.kvinder
 # andel.mænd         <-  round(bi.mænd$bi.antal.mænd / begge.antal * 100, 2)
 
-bi <- data.frame(bi.kvinder, bi.mænd$bi.antal.mænd, begge.antal, andel.mænd)
-bi <- bi[order(begge.antal, decreasing=TRUE),]
+bi <- data.frame(bi.kvinder, bi.mænd$bi.antal.mænd)
 
 ### Her bygger vi den endelige matrice
 
