@@ -13,8 +13,8 @@ library(reshape)
 options(width=250)
 setwd("~/My Dropbox/R/interlocks/")
 source("soc.sna.R")
-data <- read.csv("Organisation_BIQ_top.csv", sep="|", encoding="UTF-8")
-rel  <- read.csv("Relation_BIQ_top.csv", sep="|", encoding="UTF-8") 
+data <- read.csv("~/My Dropbox/Elite/Data/Data/Organisation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8")
+rel  <- read.csv("~/My Dropbox/Elite/Data/Data/Relation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8") 
 
 employees   <- data$ANSATTE.10
 turnover    <- data$OMSÆTNING.10
@@ -42,7 +42,6 @@ between         <- betweenness(net.org)
 neigh2          <- neighborhood.size(net.org, 2)
 net.mat         <- data.frame(deg, close, between, neigh2)
 colnames(net.mat) <- c("Degree", "Closeness", "Betweeness", "Neighborhood")
-
 ###
 
 
