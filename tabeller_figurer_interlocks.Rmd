@@ -9,12 +9,15 @@ library(ggplot2)
 library(igraph)
 library(cluster)
 library(reshape)
+memory.size(4000)
 
 options(width=250)
 setwd("~/My Dropbox/R/interlocks/")
-source("soc.sna.R")
+source("~/My Dropbox/R/soc.sna/soc.sna.R")
 data <- read.csv("~/My Dropbox/Elite/Data/Data/Organisation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8")
 rel  <- read.csv("~/My Dropbox/Elite/Data/Data/Relation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8") 
+
+data <- data[order(data$ORG_NAVN),]
 
 employees   <- data$ANSATTE.10
 turnover    <- data$OMSÆTNING.10
@@ -22,19 +25,31 @@ balance     <- data$BALANCE.10
 result      <- data$RESULTAT.FØR.SKAT.10 
 capital     <- data$EGENKAPITAL.10 
 
+size.quant <-cut(data$OMSÆTNING.10, breaks=quantile(data$OMSÆTNING.10, na.rm=TRUE), include.lowest=TRUE, labels= c("1. Quantile: Smallest", "2. Quantile", "3. Quantile", "4. Quantile: Largest" ))
+
+
 pareto.dat <- data.frame(employees, turnover, capital, balance, result)
 ### Netværk
 
 netmat <- data.frame(rel$NAVN, rel$ORG_NAVN)
 colnames(netmat) <- c("navn", "org")
 
+### Virk netværk
+
 tabnet          <- table(netmat)
 tabnet          <- as.matrix(tabnet)
-adj.org         <- t(tabnet)%*%tabnet # Individ*individ
+adj.org         <- t(tabnet)%*%tabnet # virk*virk
 diagonal.org    <- diag(adj.org)
 diag(adj.org)   <- 0
 
 net.org         <- graph.adjacency(adj.org, weighted=TRUE)
+
+### Individ netværk
+adj.ind         <- tabnet%*%t(tabnet) # Individ*individ
+diagonal.ind    <- diag(adj.ind)
+diag(adj.ind)   <- 0
+
+net.ind         <- graph.adjacency(adj.ind, weighted=TRUE)
 
 deg             <- degree(net.org) 
 close           <- closeness(net.org)
@@ -76,24 +91,45 @@ Her beskrives data udfra branche. Det er klart at målene i network.by.variable 
 
 Her skal vi have:
 
-Antal virksomheder:
-Antal edges:
-Antal direktører:
-Average degree:
-Average betweenness:
-Largest component:
-% isolates:
-% af medlemmer i core component:
-% af core component:
 
 ```{r echo=FALSE, comment="", echo=FALSE}
-network.by.variable(net.org, data$BØRSEN.BRANCHE)
+describe.network(net.org, variabel=size.quant, org.data=data)
 ```
 
-## Deskriptiv statistik for økonomiske variable
-Her skal vi have tre forskellige matricer.
+```{r echo=FALSE, comment="", echo=FALSE}
+
+layout  <- layout.fruchterman.reingold(net.org)
+layoutk <- layout.kamada.kawai(net.org)
+gplot(net.org, vertex.coord=layout, text.alpha=0)
+gplot(net.org, vertex.coord=layoutk, text.alpha=0, vertex.fill=size.quant,edge.alpha=0.3, edge.size=0.3) + guides(fill = guide_legend(override.aes = list(shape = 21))) + labs(fill="Turnover: Quantiles")
+
+```
+
+
+## Deskriptiv statistik for inderkredsen - broer og den slags
+Her skal vi have en matrice der siger hvor stor en komponent er alt efter om den er bundet sammen af alle, af CEO, direktion og bestyrelsesformænd
 
 
 ```{r echo=FALSE, comment="", echo=FALSE}
+
+# Er han direktør?
+# Først navnene på individerne i vores netværk 
+navne       <- V(net.inderkreds)$name
+# Kun relationer fra folk i inderkredsen
+a           <- rel$NAVN %in% navne
+rel.i       <- rel[rel$NAVN %in% navne,]
+# Er han adm. direktør?
+post        <- rel.i$post
+table(post)
+rel.d      <- rel.i[post == "Adm. Direktør",]
+navn.d     <- as.factor(as.character(rel.d$NAVN))
+navn.d     <- levels(navn.d)
+navn.d               # Her har vi en liste med navne for hvem det gælder at de er Adm. Direktører
+
+direktør   <- vector(length=length(navne))
+direktør[navne %in% navn.d] <- "Adm. Direktør"  # Her vælger vi at alle der har et "direktør navn" skal have et bestemt udfald.
+
+
+
 
 ```

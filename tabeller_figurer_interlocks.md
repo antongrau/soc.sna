@@ -32,11 +32,23 @@ I det her dokument samles tabeller og figurer til analysen af corporate interloc
 ```
 
 ```
+## [1] 4000
+```
+
+```
 ## Error: invalid input 'A.P. Møller - Mærsk' in 'utf8towcs'
 ```
 
 ```
 ## Error: invalid input 'Asbjørn Berge' in 'utf8towcs'
+```
+
+```
+## Error: object of type 'closure' is not subsettable
+```
+
+```
+## Error: object of type 'closure' is not subsettable
 ```
 
 ```
@@ -93,6 +105,22 @@ I det her dokument samles tabeller og figurer til analysen af corporate interloc
 
 ```
 ## Error: object 'adj.org' not found
+```
+
+```
+## Error: object 'tabnet' not found
+```
+
+```
+## Error: object 'adj.ind' not found
+```
+
+```
+## Error: object 'adj.ind' not found
+```
+
+```
+## Error: object 'adj.ind' not found
 ```
 
 ```
@@ -162,25 +190,78 @@ Her beskrives data udfra branche. Det er klart at målene i network.by.variable 
 
 Her skal vi have:
 
-Antal virksomheder:
-Antal edges:
-Antal direktører:
-Average degree:
-Average betweenness:
-Largest component:
-% isolates:
-% af medlemmer i core component:
-% af core component:
 
+
+```
+Error: object 'net.org' not found
+```
+
+
+
+```
+Error: object 'net.org' not found
+```
+
+```
+Error: object 'net.org' not found
+```
+
+```
+Error: object 'net.org' not found
+```
+
+```
+Error: object 'net.org' not found
+```
+
+
+
+## Deskriptiv statistik for inderkredsen - broer og den slags
+Her skal vi have en matrice der siger hvor stor en komponent er alt efter om den er bundet sammen af alle, af CEO, direktion og bestyrelsesformænd
+
+
+
+```
+Error: object 'net.inderkreds' not found
+```
 
 ```
 Error: object of type 'closure' is not subsettable
 ```
 
+```
+Error: object of type 'closure' is not subsettable
+```
 
-## Deskriptiv statistik for økonomiske variable
-Her skal vi have tre forskellige matricer.
+```
+Error: object 'rel.i' not found
+```
 
+```
+Error: object 'post' not found
+```
 
+```
+Error: object 'rel.i' not found
+```
 
+```
+Error: object 'rel.d' not found
+```
+
+```
+Error: object 'navn.d' not found
+```
+
+```
+Error: object 'navn.d' not found
+```
+
+```
+Error: object 'navne' not found
+```
+
+```
+Error: object 'direktør' not found
+```
 

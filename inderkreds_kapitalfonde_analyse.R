@@ -28,7 +28,7 @@ source("soc.sna.R")
 rel         <- read.csv("~/My Dropbox/Elite/Data/Data/Relation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8")
 org         <- read.csv("~/My Dropbox/Elite/Data/Data/Organisation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8")
 
-netmat <- data.frame(rel$BIQ_PERSON_ID, rel$ORG_NAVN)
+netmat <- data.frame(rel$NAVN, rel$ORG_NAVN)
 colnames(netmat) <- c("navn", "org")
 
 ### Nu laves netværksobjekterne
@@ -53,6 +53,12 @@ net.com.total        <- net.total - which(largest.com.total == FALSE)
 diagonal.com.total   <- diagonal[largest.com.total]
 adj.com.total        <- adj.ind[largest.com.total, largest.com.total]
 max(shortest.paths(net.com.total))
+
+#auto <- authority.score (net.total, scale = TRUE, weights=NULL, options = igraph.arpack.default) 
+#str(auto)
+#plot(auto)
+#hub.score (graph, scale = TRUE, weights=NULL, options = igraph.arpack.default)
+
 
 # Her smider vi alle der ikke har mere end 1 virksomheds tie.
 bridges         <- diagonal.ind > 1
@@ -80,23 +86,42 @@ max(n3)
 plot(clust3)
 
 
-
-
 ### 10 # Tjek 4
-k23            <- cutree(clust3, k=24)
-table(k24)
+
+
+
+##Brudgrupper## 
+
+##Bank og stat### 
+
+k8            <- cutree(clust3, k=8)
+table(k8)
+net.del <- net.com - which(k8 != 3)
+gplot(net.del)
+as.matrix(sort(degree(net.del)))
+
+
+#Hangarounds#
+
+k22            <- cutree(clust3, k=22)
+table(k22)
+net.del <- net.com - which(k22 != 4)
+gplot(net.del)
+as.matrix(sort(degree(net.del)))
+network.by.variable(net.com, k22)
+who(net.com, "Jørgen Tang-Jensen")
+# Skal ikke ud #
+k29            <- cutree(clust3, k=29)
+table(k29)
+net.del <- net.com - which(k29 != 6)
+gplot(net.del)
+as.matrix(sort(degree(net.del)))
+network.by.variable(net.com, k29)
 #k29            <- cutree(clust3, k=30)
 #table(k30)
 # network.by.variable(net.com, k10)
 # 
-net.del <- net.com - which(k30 != 18)
-gplot(net.del)
-# as.matrix(sort(degree(net.del)))
-## 25 Her ryger Ane Uggla
-k25            <- cutree(clust3, k=25)
-table(k25)
-network.by.variable(net.com, k24)
-write.table(network.by.variable(net.com, k24), file="Klynger.csv", sep=";")
+write.table(network.by.variable(net.com, k22), file="Klynger.csv", sep=";")
 
 
 
@@ -292,10 +317,10 @@ plot(degree.ind)
 ##N3
 
 n3               <- neighborhood.size(net.com.total, 3)-1
-plot(sort(n3))
+plot(sort(n3, decreasing=TRUE))
 
 n3               <- neighborhood.size(net.com, 3)-1
-plot(sort(n3))
+plot(sort(n3, decreasing=TRUE))
 
 ## Closeness
 close <- closeness(net.com.total)
@@ -315,8 +340,18 @@ between <- betweenness(net.com, weights=E(net.com)$weight)
 as.matrix(sort(between, decreasing=TRUE))
 plot(sort(between, decreasing=TRUE))
 
+##Grannis
+n1               <- neighborhood.size(net.total, 1)-1
+n1
 
+n2               <- neighborhood.size(net.total, 2)-1
+plot(sort(n2))
 
+grannis.g.factor <- sum(n2-n1)/sum(n1)
+grannis.g.factor
 
+#Cases
+as.matrix(sort(degree(net.total)))
 
-
+who(net.com.total, "Henning Kruse Stoltenberg Pedersen")
+who(net.com, "Fritz Henrik Schur")

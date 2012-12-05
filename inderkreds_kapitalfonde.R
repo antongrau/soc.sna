@@ -28,7 +28,7 @@ source("soc.sna.R")
 rel         <- read.csv("~/My Dropbox/Elite/Data/Data/Relation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8")
 org         <- read.csv("~/My Dropbox/Elite/Data/Data/Organisation_BIQ_top_kapitalfonde.csv", sep="|", encoding="UTF-8")
 
-netmat <- data.frame(rel$BIQ_PERSON_ID, rel$ORG_NAVN)
+netmat <- data.frame(rel$NAVN, rel$ORG_NAVN)
 colnames(netmat) <- c("navn", "org")
 
 ### Nu laves netværksobjekterne
@@ -52,6 +52,18 @@ net.com        <- net.bridge - which(largest.com == FALSE)
 diagonal.com   <- diagonal[largest.com]
 adj.com        <- adj.ind[largest.com, largest.com]
 
+# adj.b<- rownames(adj.com)
+# adj.n<- rownames(adj.com)
+
+# 
+# n <- rel$BIQ_PERSON_ID
+# nn <- rel$NAVN[n %in% adj.b]
+# 
+# m.biq<-levels(as.factor(as.character(nn)))
+# 
+# adj.n[adj.n %in% m.biq == FALSE]
+
+
 # Her finder vi inderkredsen
 circle3        <- circles(net.com, 3, "total")
 clust3         <- agnes(circle3)
@@ -68,7 +80,7 @@ clust3         <- agnes(circle3)
 # as.matrix(sort(degree(net.del)))
 ## 25 Her ryger Ane Uggla
 k25            <- cutree(clust3, k=25)
-# table(k25)
+ table(k25)
 
 #network.by.variable(net.com, k25==4)
 #net.del <- net.com - which(k25 != 4)
@@ -77,9 +89,9 @@ k25            <- cutree(clust3, k=25)
 de.170         <- which(k25==1)
 net.inderkreds <- net.com - which(k25!=1)
 
-navne <- V(net.com)$name
-navn.170 <- navne[de.170]
+navne <- V(net.inderkreds)$name
 
+navn.170 <- navne[de.170]
 
 save(net.inderkreds, file="inderkredsen")
 save(navn.170, file="inderkredsens.navne")
