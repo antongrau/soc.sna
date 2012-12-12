@@ -25,7 +25,8 @@ balance     <- data$BALANCE.10
 result      <- data$RESULTAT.FØR.SKAT.10 
 capital     <- data$EGENKAPITAL.10 
 
-size.quant <-cut(data$OMSÆTNING.10, breaks=quantile(data$OMSÆTNING.10, na.rm=TRUE), include.lowest=TRUE, labels= c("1. Quantile: Smallest", "2. Quantile", "3. Quantile", "4. Quantile: Largest" ))
+size.quant  <- cut(data$OMSÆTNING.10, breaks=quantile(data$OMSÆTNING.10, na.rm=TRUE), include.lowest=TRUE, labels= c("1. Quantile: Smallest", "2. Quantile", "3. Quantile", "4. Quantile: Largest" ))
+variabel    <- cut(org$OMSÆTNING.10, breaks=quantile(org$OMSÆTNING.10, na.rm=TRUE), include.lowest=TRUE, labels= c("1. kvartil: Mindst", "2. kvartil", "3. kvartil", "4. kvartil: Størst" ))
 
 
 pareto.dat <- data.frame(employees, turnover, capital, balance, result)
@@ -94,6 +95,9 @@ Her skal vi have:
 
 ```{r echo=FALSE, comment="", echo=FALSE}
 describe.network(net.org, variabel=size.quant, org.data=data)
+describe.network(net.org, variabel=data$region, org.data=data)
+describe.network(net.org, variabel=data$stockexchange, org.data=data)
+
 ```
 
 ```{r echo=FALSE, comment="", echo=FALSE}

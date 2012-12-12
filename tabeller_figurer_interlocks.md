@@ -6,18 +6,6 @@ I det her dokument samles tabeller og figurer til analysen af corporate interloc
 
 
 ```
-## Warning: package 'igraph' was built under R version 2.15.2
-```
-
-```
-## Warning: package 'cluster' was built under R version 2.15.2
-```
-
-```
-## Warning: package 'reshape' was built under R version 2.15.2
-```
-
-```
 ## Loading required package: plyr
 ```
 
@@ -32,143 +20,11 @@ I det her dokument samles tabeller og figurer til analysen af corporate interloc
 ```
 
 ```
-## [1] 4000
+## Warning: 'memory.size()' is Windows-specific
 ```
 
 ```
-## Error: invalid input 'A.P. Møller - Mærsk' in 'utf8towcs'
-```
-
-```
-## Error: invalid input 'Asbjørn Berge' in 'utf8towcs'
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```
-## Error: object 'employees' not found
-```
-
-```
-## Error: object of type 'closure' is not subsettable
-```
-
-```
-## Error: object 'netmat' not found
-```
-
-```
-## Error: object 'netmat' not found
-```
-
-```
-## Error: object 'tabnet' not found
-```
-
-```
-## Error: object 'tabnet' not found
-```
-
-```
-## Error: object 'adj.org' not found
-```
-
-```
-## Error: object 'adj.org' not found
-```
-
-```
-## Error: object 'adj.org' not found
-```
-
-```
-## Error: object 'tabnet' not found
-```
-
-```
-## Error: object 'adj.ind' not found
-```
-
-```
-## Error: object 'adj.ind' not found
-```
-
-```
-## Error: object 'adj.ind' not found
-```
-
-```
-## Error: object 'net.org' not found
-```
-
-```
-## Error: object 'net.org' not found
-```
-
-```
-## Error: object 'net.org' not found
-```
-
-```
-## Error: object 'net.org' not found
-```
-
-```
-## Error: object 'deg' not found
-```
-
-```
-## Error: object 'net.mat' not found
-```
-
-```
-## Error: object 'pareto.dat' not found
-```
-
-```
-## Error: object 'pareto.dat' not found
-```
-
-```
-## Error: object 'pareto.dat' not found
-```
-
-```
-## Error: object 'net.mat' not found
-```
-
-```
-## Error: object 'net.mat' not found
-```
-
-```
-## Error: object 'net.mat' not found
+## [1] Inf
 ```
 
 
@@ -176,12 +32,10 @@ Pareto fordelinger eller Lorentz-kurver for økonomiske variable og netværksvar
 
 
 ```
-Error: object 'pareto.dat' not found
+Warning: Removed 204 rows containing missing values (geom_path).
 ```
 
-```
-Error: object 'net.mat' not found
-```
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-21.png) ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-22.png) 
 
 
 ## Deskriptiv statistik for netværksmål
@@ -193,25 +47,20 @@ Her skal vi have:
 
 
 ```
-Error: object 'net.org' not found
+                                All 1. Quantile: Smallest 2. Quantile 3. Quantile 4. Quantile: Largest
+Corporations                 1037.0                 673.0       669.0       671.0                671.0
+Ties                         2724.0                1170.0      1104.0      1110.0               1122.0
+% in central component         49.5                   9.5         9.1         9.7                  8.3
+Average degree                  5.3                   1.1         0.9         0.9                  1.0
+Average betweeness            952.8                 158.5       172.0       164.2                190.0
+Average 3rd neighborhoodsize   53.9                  11.3         9.2        10.1                  9.7
 ```
 
 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
 
 ```
-Error: object 'net.org' not found
-```
-
-```
-Error: object 'net.org' not found
-```
-
-```
-Error: object 'net.org' not found
-```
-
-```
-Error: object 'net.org' not found
+Error: replacement has 527 rows, data has 1037
 ```
 
 
@@ -226,11 +75,11 @@ Error: object 'net.inderkreds' not found
 ```
 
 ```
-Error: object of type 'closure' is not subsettable
+Error: object 'navne' not found
 ```
 
 ```
-Error: object of type 'closure' is not subsettable
+Error: object 'navne' not found
 ```
 
 ```
