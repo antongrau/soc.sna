@@ -49,6 +49,7 @@ diag(adjacency.individ)       <- 0
 # Så laver vi et netværksobjekt for individer
 graph.individ        <- graph.adjacency(adjacency.individ, mode="undirected", weighted=TRUE)
 
+
 # Nu laver vi et netværksobjekt for organisationer
 graph.organisation   <- graph.adjacency(adjacency.organisation, mode="undirected", weighted=TRUE)
 
@@ -76,7 +77,7 @@ library(ggplot2)
 # Så laver vi fancy plot for individerne
 gplot(graph.individ, vertex.coord=layout.kamada.kawai(graph.individ))
 # Et til!
-gplot(graph.individ, vertex.coord=layout.fruchterman.reingold(graph.individ), edge.colour="red", edge.alpha=0.2, text.size=6)
+gplot(graph.individ, vertex.coord=layout.kamada.kawai(graph.individ), edge.colour="red", edge.alpha=0.2, text.size=6)
 
 
 # Fancy plots for organisationerne
@@ -84,3 +85,12 @@ gplot(graph.organisation, vertex.coord=layout.kamada.kawai(graph.organisation))
 # Et til!
 gplot(graph.organisation, vertex.coord=layout.fruchterman.reingold(graph.organisation), edge.colour="blue", edge.alpha=0.2 )
 
+#Lidt mål
+sort(closeness(graph.individ), decreasing=TRUE)
+sort(degree(graph.individ), decreasing=TRUE)
+sort(betweenness(graph.individ), decreasing=TRUE)
+sort(evcent(graph.individ), decreasing=TRUE)
+evcent(graph.individ)
+page.rank(graph.individ)
+authority.score(graph.individ)
+hub.score(graph.individ)

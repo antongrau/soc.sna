@@ -3,10 +3,33 @@ library(igraph)
 library(ggplot2)
 source("soc.sna.R")
 
-bag <- read.csv("data_baggrund.csv", sep="|", fileEncoding="UTF-8")
+bag    <- read.csv("data_baggrund.csv", sep="|", fileEncoding="UTF-8")
+n      <- as.character(bag$Navn)
 
-n <- as.character(bag$Navn)
 
+##############################
+# Uddannelse
+
+uddannelse      <- read.csv("data_uddannelse.csv", sep="|", fileEncoding="UTF-8")
+uddannelse$Navn <- sub(' +$', '', uddannelse$Navn)
+nu              <- as.character(uddannelse$Navn)
+data            <- cbind(bag, uddannelse[,-1])
+data$Navn       <- nu
+
+
+
+###################################################################
+# Find Biq_id
+
+# Ufærdigt
+rel            <- read.csv("Data_virksomheder_rel.csv", sep="|", fileEncoding="UTF-8")
+
+rel.n          <- as.character(rel$NAVN)[rel$NAVN %in% nu]
+rel.id         <- as.character(rel$BIQ_PERSON_ID)[rel$NAVN %in% nu]
+
+fest <- unique(data.frame(rel.n, rel.id))
+
+fest
 
 ##############################
 # find advokaterne
@@ -25,15 +48,6 @@ bag$advokat <- advokat.ind
 
 summary(advokat.ind)
 n[advokat.ind == "Advokat"]
-
-##############################
-# Uddannelse
-
-uddannelse      <- read.csv("data_uddannelse.csv", sep="|", fileEncoding="UTF-8")
-uddannelse$Navn <- sub(' +$', '', uddannelse$Navn)
-nu              <- as.character(uddannelse$Navn)
-data            <- cbind(bag, uddannelse[,-1])
-data$Navn       <- nu
 
 
 ###############################
@@ -65,6 +79,21 @@ find.køn <- function(navne, names.gender=names.gender){
 
 køn <- find.køn(nu, gender.mat)
 data$køn <- køn
+
+#################################
+## Find kommissionsmedlemmer
+
+ind  <- read.csv("indsamling_kommission.csv", sep="|", fileEncoding="UTF-8")
+dn <- data$Navn
+
+indo <- ind[ind$BIQ_ID != 0,]
+indo <- indo[indo$Data_kilde != "Bestyrelse",]
+bid  <- indo$BIQ_ID
+bestyrelse <- ind[ind$BIQ_ID %in% bid & ind$Data_kilde == "Bestyrelse",]
+kommissionspost <- as.factor(data$Navn %in% bestyrelse$NAVN)
+levels(kommissionspost) <- c("Ingen kommissionspost" , "Kommissionspost")
+
+data$kommissionspost <- kommissionspost
 
 ###############################
 ### Gem
