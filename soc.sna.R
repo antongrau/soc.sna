@@ -11,16 +11,20 @@
 # edges alpha, linetype og colour
 # vertex: size, fill, shape
 # Text
+# Desværre kan vi ikke have både vertex.fill og vertex.shape - på samme tid - det skyldes to ting - 1 det er ikke alle shapes der har fill og 2 der er noget med legend
+
 
 # Der skal være assigned en vægt til netværket...
 
 
 # graph <- net
+# lay <- layout.fruchterman.reingold(graph)
 # vertex.coord <- lay
 # vertex.color="black"
 # vertex.fill="grey60"
+# vertex.fill=data$køn
 # vertex.shape=21
-# vertex.size=3
+# vertex.size=1:170
 # vertex.alpha=1
 # edge.color="black"
 # edge.alpha=0.2
@@ -106,10 +110,10 @@ gplot <- function(graph, vertex.coord=layout.fruchterman.reingold(graph),
   
   # Vertex
   pnet <- pnet + geom_point(data=vertex.coord, aes(x=x, y=y, size=vertex.size, fill=vertex.fill, shape=vertex.shape), alpha=vertex.alpha, color=vertex.color)
+  # Shape
+  if (length(vertex.shape)==1) pnet <- pnet + scale_shape_manual(values=vertex.shape, guide="none") 
   # Fill
   if (length(vertex.fill)==1) pnet <- pnet + scale_fill_manual(values=as.character(vertex.fill), guide="none")
-  # Shape
-  if (length(vertex.shape)==1) pnet <- pnet + scale_shape_manual(values=vertex.shape, guide="none")
   # Size
   if (length(vertex.size)==1) pnet <- pnet + scale_size(range=c(vertex.size,vertex.size), guide="none")
   
@@ -123,10 +127,15 @@ gplot <- function(graph, vertex.coord=layout.fruchterman.reingold(graph),
   # Linetype
   if (length(edge.line)==1) pnet <- pnet + scale_linetype_identity(guide="none")
   # Theme
-  pnet + theme_bw()
+  pnet <- pnet + theme_bw() 
+  # Legend
+  if (length(vertex.shape)==1 & length(vertex.fill)!=1)   pnet <-  pnet + guides(fill = guide_legend(override.aes = list(shape = vertex.shape, size=3))) + labs(fill="")
+#  pnet <-  pnet + guides(fill = guide_legend(override.aes = list(shape = vertex.shape, size=3))) + labs(fill="")
+  pnet
+  
   
   # This function plots igraph objects. It requires a graph object from igraph,
-  # and a vertex.coord object from a 
+  # and a vertex.coord object from a layout function
   # The following vertex attributes can be mapped by variables of proper length:
   # Vertex.size, vertex.fill and vertex.shape
   # The following edge attributes can be mapped by variables of proper length:
