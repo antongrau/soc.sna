@@ -21,15 +21,19 @@ data$Navn       <- nu
 ###################################################################
 # Find Biq_id
 
-# Ufærdigt
+
 rel            <- read.csv("Data_virksomheder_rel.csv", sep="|", fileEncoding="UTF-8")
 
 rel.n          <- as.character(rel$NAVN)[rel$NAVN %in% nu]
 rel.id         <- as.character(rel$BIQ_PERSON_ID)[rel$NAVN %in% nu]
-
 fest <- unique(data.frame(rel.n, rel.id))
-
-fest
+tb <- table(fest$rel.n)
+fest <- fest[order(fest[,1]),]
+eliminate <- c(1154180, 270261, 908748, 282522, 1655058, 468144, 468165, 989328, 513857, 1605072, 1881695, 919971, 570550)
+festa <- fest[(fest[,2] %in% eliminate)==FALSE ,]
+festa[,2] <- as.numeric(as.character(festa[,2]))
+festa[,2][festa[,1] %in% c("Jørgen Jensen", "Lars Jensen", "Niels Fog")]   <- NA
+data$BIQ_ID <- festa[,2]
 
 ##############################
 # find advokaterne
