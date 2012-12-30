@@ -33,6 +33,7 @@ eliminate <- c(1154180, 270261, 908748, 282522, 1655058, 468144, 468165, 989328,
 festa <- fest[(fest[,2] %in% eliminate)==FALSE ,]
 festa[,2] <- as.numeric(as.character(festa[,2]))
 festa[,2][festa[,1] %in% c("Jørgen Jensen", "Lars Jensen", "Niels Fog")]   <- NA
+festa <- festa[order(festa[,1]),]
 data$BIQ_ID <- festa[,2]
 
 ##############################
