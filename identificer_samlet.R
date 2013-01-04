@@ -49,7 +49,7 @@ advokat_BIQ_navn <- advokat_biq$Navn[advokat_biq$BIQ_ID %in% advokat$BIQ_ID]
 
 advokat.ind <- as.factor(n %in% advokat_BIQ_navn)
 levels(advokat.ind) <- c("Ikke advokat", "Advokat")
-bag$advokat <- advokat.ind
+data$advokat <- advokat.ind
 
 summary(advokat.ind)
 n[advokat.ind == "Advokat"]
