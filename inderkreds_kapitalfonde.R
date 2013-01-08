@@ -43,7 +43,7 @@ diag(adj.ind)   <- 0
 bridges         <- diagonal.ind > 1
 adj.ind         <- adj.ind[bridges, bridges]
 diagonal        <- diagonal.ind[bridges]
-net.bridge      <- graph.adjacency(adj.ind, weighted=TRUE)
+net.bridge      <- graph.adjacency(adj.ind, weighted=TRUE, mode="undirected")
 
 # Her finder vi den største component
 com            <- clusters(net.bridge)
